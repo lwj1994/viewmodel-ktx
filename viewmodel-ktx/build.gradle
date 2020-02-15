@@ -7,8 +7,8 @@ ext {
     artifactId = "viewmodelktx"
     pkg_name = "viewmodelktx"
     libraryDescription = 'viewmodelktx'
-    siteUrl = 'https://github.com/lwj1994/viewmodelktx.git'
-    gitUrl = 'https://github.com/lwj1994/viewmodelktx.git'
+    siteUrl = 'https://github.com/lwj1994/viewmodel-ktx.git'
+    gitUrl = 'https://github.com/lwj1994/viewmodel-ktx.git'
     developerId = 'wenchieh'
     developerName = 'wenchieh'
     developerEmail = 'alwjlola@gmail.com'
