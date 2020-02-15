@@ -28,9 +28,9 @@ inline fun <reified VM : ViewModel> Fragment.lazyActivityViewModel(
     val factoryValue = factory() ?: defaultViewModelProviderFactory
     val keyValue = key()
     if (keyValue == null) {
-        ViewModelProvider(viewModelStore, factoryValue).get(VM::class.java)
+        ViewModelProvider(requireActivity().viewModelStore, factoryValue).get(VM::class.java)
     } else {
-        ViewModelProvider(viewModelStore, factoryValue).get(keyValue, VM::class.java)
+        ViewModelProvider(requireActivity().viewModelStore, factoryValue).get(keyValue, VM::class.java)
     }
 }
 
