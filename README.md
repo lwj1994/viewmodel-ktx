@@ -54,3 +54,7 @@ private val viewModel by lazyActivityViewModel<ActivityViewModel>(
         }
     )
 ```
+
+## Thanks
+
+[MvRx](https://github.com/airbnb/MvRx)
