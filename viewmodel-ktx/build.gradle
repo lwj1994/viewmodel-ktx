@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 ext {
-    libVersion = "0.0.1"
+    libVersion = "0.0.2"
     groupId = "com.lwjlol.viewmodelktx"
     artifactId = "viewmodel-ktx"
     pkg_name = "viewmodel-ktx"
