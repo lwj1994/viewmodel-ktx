@@ -1,0 +1,3 @@
+rootProject.name='ViewModelktxMaster'
+include ':app'
+include ':viewmodel-ktx'
