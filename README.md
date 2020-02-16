@@ -5,7 +5,7 @@
 通过 `by` 委托关键字更方便的创建 ViewModel。在 Activity/Fragment `OnCreate` 的时候自动创建 `ViewMdoel`
 ## 使用说明
 ```
-implementation 'com.lwjlol.viewmodelktx:viewmodel-ktx:0.0.1'
+implementation 'com.lwjlol.viewmodelktx:viewmodel-ktx:0.0.2'
 ```
 
 * 在 Activity 中创建：
