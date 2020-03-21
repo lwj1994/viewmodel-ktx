@@ -24,19 +24,50 @@ inline fun <reified VM : ViewModel> FragmentActivity.lazyActivityViewModel(
 
 inline fun <reified VM : ViewModel> Fragment.lazyActivityViewModel(
     crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
-    crossinline key: () -> String? = { null }): Lazy<VM> = LifecycleAwareLazy(this) {
+    crossinline key: () -> String? = { null }
+): Lazy<VM> = LifecycleAwareLazy(this) {
     val factoryValue = factory() ?: defaultViewModelProviderFactory
     val keyValue = key()
     if (keyValue == null) {
         ViewModelProvider(requireActivity().viewModelStore, factoryValue).get(VM::class.java)
     } else {
-        ViewModelProvider(requireActivity().viewModelStore, factoryValue).get(keyValue, VM::class.java)
+        ViewModelProvider(requireActivity().viewModelStore, factoryValue).get(
+            keyValue,
+            VM::class.java
+        )
+    }
+}
+
+/**
+ *
+ * 在父 fragment 寻找一个现有的 [ViewModel] 找不到就在父 Fragment 里创建一个
+ *
+ * 只能在子 fragment 里使用
+ *
+ * @param factory
+ * @param keyFactory
+ * @return [LifecycleAwareLazy]
+ */
+inline fun <reified VM : ViewModel> Fragment.lazyParentFragmentViewModel(
+    crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
+    crossinline keyFactory: () -> String? = { null }
+): Lazy<VM> = LifecycleAwareLazy(this) {
+    val fragment = parentFragment
+        ?: throw IllegalArgumentException("There is no parent fragment for ${this::class.java.simpleName}!")
+    val keyValue = keyFactory()
+    val factoryValue = factory() ?: fragment.defaultViewModelProviderFactory
+    if (keyValue == null) {
+        ViewModelProvider(fragment.viewModelStore, factoryValue).get(VM::class.java)
+    } else {
+        ViewModelProvider(fragment.viewModelStore, factoryValue).get(keyValue, VM::class.java)
+
     }
 }
 
 inline fun <reified VM : ViewModel> Fragment.lazyFragmentViewModel(
     crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
-    crossinline key: () -> String? = { null }): Lazy<VM> = LifecycleAwareLazy(this) {
+    crossinline key: () -> String? = { null }
+): Lazy<VM> = LifecycleAwareLazy(this) {
     val factoryValue = factory() ?: defaultViewModelProviderFactory
     val keyValue = key()
     if (keyValue == null) {
@@ -47,10 +78,13 @@ inline fun <reified VM : ViewModel> Fragment.lazyFragmentViewModel(
 }
 
 inline fun <reified VM : ViewModel> View.lazyActivityViewModel(
-    crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null }, crossinline key: () -> String? = { null }): Lazy<VM> = lazy(
+    crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
+    crossinline key: () -> String? = { null }
+): Lazy<VM> = lazy(
     LazyThreadSafetyMode.NONE
 ) {
-    val context = context as? FragmentActivity ?: throw IllegalStateException("view context is not FragmentActivity")
+    val context = context as? FragmentActivity
+        ?: throw IllegalStateException("view context is not FragmentActivity")
     val factoryValue = factory() ?: context.defaultViewModelProviderFactory
     val keyValue = key()
     if (keyValue == null) {
@@ -61,8 +95,10 @@ inline fun <reified VM : ViewModel> View.lazyActivityViewModel(
 }
 
 inline fun <reified VM : ViewModel> View.getActivityViewModel(
-    factory: ViewModelProvider.Factory? = null, key: String? = null): VM {
-    val context = context as? FragmentActivity ?: throw IllegalStateException("view context is not FragmentActivity")
+    factory: ViewModelProvider.Factory? = null, key: String? = null
+): VM {
+    val context = context as? FragmentActivity
+        ?: throw IllegalStateException("view context is not FragmentActivity")
     val f = factory ?: context.defaultViewModelProviderFactory
     return if (key == null) {
         ViewModelProvider(context.viewModelStore, f).get(VM::class.java)
@@ -70,8 +106,6 @@ inline fun <reified VM : ViewModel> View.getActivityViewModel(
         ViewModelProvider(context.viewModelStore, f).get(key, VM::class.java)
     }
 }
-
-
 
 
 private object UninitializedValue
@@ -84,9 +118,11 @@ private object UninitializedValue
 class LifecycleAwareLazy<out T>(private val owner: LifecycleOwner, initializer: () -> T) : Lazy<T>,
     Serializable {
     private var initializer: (() -> T)? = initializer
+
     @Volatile
     @SuppressWarnings("Detekt.VariableNaming")
     private var _value: Any? = UninitializedValue
+
     // final field is required to enable safe publication of constructed instance
     private val lock = this
 

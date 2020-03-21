@@ -4,9 +4,25 @@
  
 通过 `by` 委托关键字更方便的创建 ViewModel。在 Activity/Fragment `OnCreate` 的时候自动创建 `ViewMdoel`
 ## 使用说明
+
 ```
 implementation 'com.lwjlol.viewmodelktx:viewmodel-ktx:0.0.2'
 ```
+
+1. lazyActivityViewModel()
+
+获取 Activity 的 ViewModel，用于和 Activity 和 Fragment 共享一个 ViewModel 的情况。
+
+2. lazyFragmentViewModel()
+
+获取 Fragment 的 ViewModel
+
+3. lazyFragmentViewModel()
+
+子 Fragment 获取父 Fragment 的 ViewModel，用于和父 Fragment 和 子 Fragment 共享一个 ViewModel 的情况。
+
+
+
 
 * 在 Activity 中创建：
 ```kotlin
