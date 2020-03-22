@@ -9,7 +9,7 @@ import java.io.Serializable
 
 
 inline fun <reified VM : ViewModel> FragmentActivity.lazyActivityViewModel(
-    crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
+    crossinline factory: () -> ViewModelProvider.Factory? = { null },
     crossinline key: () -> String? = { null }
 ): Lazy<VM> = LifecycleAwareLazy(this) {
     val factoryValue = factory() ?: defaultViewModelProviderFactory
@@ -23,7 +23,7 @@ inline fun <reified VM : ViewModel> FragmentActivity.lazyActivityViewModel(
 
 
 inline fun <reified VM : ViewModel> Fragment.lazyActivityViewModel(
-    crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
+    crossinline factory: () -> ViewModelProvider.Factory? = { null },
     crossinline key: () -> String? = { null }
 ): Lazy<VM> = LifecycleAwareLazy(this) {
     val factoryValue = factory() ?: defaultViewModelProviderFactory
@@ -49,7 +49,7 @@ inline fun <reified VM : ViewModel> Fragment.lazyActivityViewModel(
  * @return [LifecycleAwareLazy]
  */
 inline fun <reified VM : ViewModel> Fragment.lazyParentFragmentViewModel(
-    crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
+    crossinline factory: () -> ViewModelProvider.Factory? = { null },
     crossinline keyFactory: () -> String? = { null }
 ): Lazy<VM> = LifecycleAwareLazy(this) {
     val fragment = parentFragment
@@ -65,7 +65,7 @@ inline fun <reified VM : ViewModel> Fragment.lazyParentFragmentViewModel(
 }
 
 inline fun <reified VM : ViewModel> Fragment.lazyFragmentViewModel(
-    crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
+    crossinline factory: () -> ViewModelProvider.Factory? = { null },
     crossinline key: () -> String? = { null }
 ): Lazy<VM> = LifecycleAwareLazy(this) {
     val factoryValue = factory() ?: defaultViewModelProviderFactory
@@ -78,7 +78,7 @@ inline fun <reified VM : ViewModel> Fragment.lazyFragmentViewModel(
 }
 
 inline fun <reified VM : ViewModel> View.lazyActivityViewModel(
-    crossinline factory: () -> ViewModelProvider.NewInstanceFactory? = { null },
+    crossinline factory: () -> ViewModelProvider.Factory? = { null },
     crossinline key: () -> String? = { null }
 ): Lazy<VM> = lazy(
     LazyThreadSafetyMode.NONE
